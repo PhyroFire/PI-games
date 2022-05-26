@@ -76,7 +76,7 @@ const getAllGames = async () => {
     return gamesDb.concat(gamesApi)
 }
 
-const postGameDb = async (name, description, release_date, rating, platform, img) => {
+const postGameDb = async (name, description, release_date, rating, platform, img, genre) => {
 
     const game = await Videogame.create({
         name,
@@ -86,6 +86,16 @@ const postGameDb = async (name, description, release_date, rating, platform, img
         platform,
         img,
     })
+    await postGenresInDb()
+    genre?.forEach(async (gen) => {  // me guarda en genero un array los objetos con un name por cada genero, VER!!!
+        let genreDb = await Genre.findAll({
+            where : {
+                name : gen
+            }
+        })
+        await game.addGenre(genreDb)
+    })
+
     return "Game created"
 }
 
@@ -103,8 +113,8 @@ const postGenresInDb = async () => {
 
     let apiGenres = await getGenres();
     apiGenres.forEach(genre => {
-        const generoNuevo = Genre.create({
-            name: genre
+        const generoNuevo = Genre.findOrCreate({
+            where: {name: genre}
         })
     })
     return apiGenres
@@ -182,7 +192,8 @@ router.get('/videogame/:id', async (req, res, next) => {
 router.post('/videogame', async (req, res, next) => {
     let datos = req.body
     try {
-        let juegoCreado = postGameDb(datos.name, datos.description, datos.release_date, datos.rating, datos.platform, datos.img)
+        let juegoCreado = postGameDb(datos.name, datos.description, datos.release_date, 
+            datos.rating, datos.platform, datos.img, datos.genre)
         res.json(juegoCreado)
     } catch (error) {
         next(error)
