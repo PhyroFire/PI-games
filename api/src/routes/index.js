@@ -16,13 +16,13 @@ const getApiGames = async () => {
     let url = `https://api.rawg.io/api/games?key=${API_KEY}`
     let page = `&page=`
     const juegos = []
-    let pages = [ axios(url)]
+    let pages = [axios(url)]
 
-    for( let i = 1 ; i < 5 ; i++){
-        let elemento = axios (url + page + (i+1))
+    for (let i = 1; i < 5; i++) {
+        let elemento = axios(url + page + (i + 1))
         pages.push(elemento)
     }
- 
+
     await Promise.all(pages).then((r) => {
 
         r.map((r) => {
