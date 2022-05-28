@@ -95,9 +95,15 @@ const postGameDb = async (name, description, release_date, rating, platform, img
         img,
     })
     await postGenresInDb()
-    genre?.forEach(async (gen) => {
-        await game.addGenre(gen)
+    // genre?.forEach(async (gen) => {
+    //     await game.addGenre(gen)
+    // })
+    let genresInDB = await Genre.findAll({
+        where : {
+            name: genre
+        }, attributes: ['id']
     })
+    game.addGenre(genresInDB)
 
     return "Game created"
 }
