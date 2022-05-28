@@ -11,32 +11,40 @@ const router = Router();
 // Ejemplo: router.use('/auth', authRouter);
 
 
-
 const getApiGames = async () => {
     // Devuelve los 100 primeros juegos de la API
     let url = `https://api.rawg.io/api/games?key=${API_KEY}`
     let page = `&page=`
     const juegos = []
+    let pages = [ axios(url)]
 
-    for (let i = 0; i < 5; i++) {
-
-        let gamesUrl = await axios(url)
-        let mapeo = await gamesUrl.data.results.map(game => {
-            return {
-                id: game.id,
-                name: game.name,
-                release_date: game.released,
-                rating: game.rating,
-                img: game.background_image,
-                genre: game.genres.map(obj => obj.name), // array de generos
-                platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
-            }
-        })
-        juegos.push(mapeo)
-        url = url + page + `${i + 2}`
+    for( let i = 1 ; i < 5 ; i++){
+        let elemento = axios (url + page + (i+1))
+        pages.push(elemento)
     }
-    return juegos.flat() // [100 juegos]
+ 
+    await Promise.all(pages).then((r) => {
+
+        r.map((r) => {
+            let game = r.data.results.map(game => {
+                return {
+                    id: game.id,
+                    name: game.name,
+                    release_date: game.released,
+                    rating: game.rating,
+                    img: game.background_image,
+                    genres: game.genres.map(obj => obj.name), // array de generos
+                    platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
+                }
+            })
+            juegos.push(game)
+        })
+    })
+
+    return juegos.flat()
 }
+
+
 
 const getDbGames = async (params) => {
     // Espera un parametro name y devuelve coincidencias, si no lo recibe devuelve todos los juegos
@@ -87,13 +95,8 @@ const postGameDb = async (name, description, release_date, rating, platform, img
         img,
     })
     await postGenresInDb()
-    genre?.forEach(async (gen) => {  // me guarda en genero un array los objetos con un name por cada genero, VER!!!
-        let genreDb = await Genre.findAll({
-            where : {
-                name : gen
-            }
-        })
-        await game.addGenre(genreDb)
+    genre?.forEach(async (gen) => {
+        await game.addGenre(gen)
     })
 
     return "Game created"
@@ -104,7 +107,7 @@ const getGenres = async () => {
     const genres = []
     let infoGenres = await axios(`https://api.rawg.io/api/genres?key=${API_KEY}`)
     infoGenres.data.results.map(genre => {
-        genres.push(genre.name)
+        genres.push({ name: genre.name, id: genre.id })
     })
     return genres
 }
@@ -113,8 +116,8 @@ const postGenresInDb = async () => {
 
     let apiGenres = await getGenres();
     apiGenres.forEach(genre => {
-        const generoNuevo = Genre.findOrCreate({
-            where: {name: genre}
+        Genre.findOrCreate({
+            where: { name: genre.name, id: genre.id }
         })
     })
     return apiGenres
@@ -130,7 +133,7 @@ const getGenresInDb = async () => {
     if (genresInDB) {
         let genres = await Genre.findAll()
         let genresToJson = genres.map(gen => gen.toJSON())
-        genresToJson.map(gen => generos.push(gen.name))
+        genresToJson.map(gen => generos.push({ name: gen.name, id: gen.id }))
         return generos
     } else {
         generos = postGenresInDb()
@@ -138,6 +141,7 @@ const getGenresInDb = async () => {
     }
 
 }
+
 
 router.get('/videogames', async (req, res, next) => {
 
@@ -152,7 +156,7 @@ router.get('/videogames', async (req, res, next) => {
                 release_date: game.released,
                 rating: game.rating,
                 img: game.background_image,
-                genre: game.genres.map(obj => obj.name), // array de generos
+                genres: game.genres.map(obj => obj.name), // array de generos
                 platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
             }
         })
@@ -169,7 +173,7 @@ router.get('/videogames', async (req, res, next) => {
     } else {
 
         try {
-            let games = await getAllGames() // MEJORAR PARA QUE SOLO UNA VEZ LLAME A LA API
+            let games = await getAllGames();
             res.json(games)
         } catch (error) {
             next(error)
@@ -178,11 +182,30 @@ router.get('/videogames', async (req, res, next) => {
 })
 
 router.get('/videogame/:id', async (req, res, next) => {
-    // Trae solo los juegos de la API
+
     let id = req.params.id
     try {
-        let gameInApi = await axios(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
-        res.json(gameInApi.data)
+        if (id.length > 10) {
+            let resultado = await Videogame.findByPk(id)
+            if (resultado) {
+                let genero = await resultado.getGenres()
+                let genres = genero.map(gen => gen.name)
+                res.json({ ...resultado.dataValues, genres })
+            }
+        } else {
+            let gameInApi = await axios(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`)
+            let game = {
+                id: gameInApi.data.id,
+                name: gameInApi.data.name,
+                release_date: gameInApi.data.released,
+                rating: gameInApi.data.rating,
+                img: gameInApi.data.background_image,
+                genres: gameInApi.data.genres.map(obj => obj.name), // array de generos
+                platform: gameInApi.data.platforms.map(obj => obj.platform.name), // array de plataformas
+                description: gameInApi.data.description,
+            }
+            res.json(game)
+        }
     } catch (error) {
         next(error)
     }
@@ -192,7 +215,7 @@ router.get('/videogame/:id', async (req, res, next) => {
 router.post('/videogame', async (req, res, next) => {
     let datos = req.body
     try {
-        let juegoCreado = postGameDb(datos.name, datos.description, datos.release_date, 
+        let juegoCreado = postGameDb(datos.name, datos.description, datos.release_date,
             datos.rating, datos.platform, datos.img, datos.genre)
         res.json(juegoCreado)
     } catch (error) {
@@ -202,13 +225,12 @@ router.post('/videogame', async (req, res, next) => {
 
 router.get('/genres', async (req, res, next) => {
     let generos = await getGenresInDb();
-    console.log(generos)
+
     try {
         res.json(generos)
     } catch (error) {
         next(error)
     }
-
 })
 
 
