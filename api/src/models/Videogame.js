@@ -31,6 +31,11 @@ module.exports = (sequelize) => {
     },
     img: {
       type: DataTypes.BLOB,
+    },
+    myGame: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   },{timestamps: false});
 };

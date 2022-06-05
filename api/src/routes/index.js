@@ -6,10 +6,10 @@ const { API_KEY } = process.env;
 const axios = require('axios');
 const { Videogame, Genre } = require('../db');
 const router = Router();
+// const {getAllGames, getDbGames, postGameDb, getGenresInDb} = require ('./functions.js') // ARREGLAR PARA MODULARIZAR !!
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
-
 
 const getApiGames = async () => {
     // Devuelve los 100 primeros juegos de la API
@@ -17,14 +17,11 @@ const getApiGames = async () => {
     let page = `&page=`
     const juegos = []
     let pages = [axios(url)]
-
     for (let i = 1; i < 5; i++) {
         let elemento = axios(url + page + (i + 1))
         pages.push(elemento)
     }
-
     await Promise.all(pages).then((r) => {
-
         r.map((r) => {
             let game = r.data.results.map(game => {
                 return {
@@ -40,52 +37,35 @@ const getApiGames = async () => {
             juegos.push(game)
         })
     })
-
     return juegos.flat()
 }
 
-
-
-const getDbGames = async (params) => {
+const getDbGames = async (name) => {
     // Espera un parametro name y devuelve coincidencias, si no lo recibe devuelve todos los juegos
-    if (params) {
-
-        let where = {}
-        let condition = {
-            include: {
-                model: Genre,
-                attributes: ['name'],
-                through: { attributes: [] }
-            }
+    let condition = {
+        include: {
+            model: Genre,
+            attributes: ['name'],
+            through: { attributes: [] }
         }
+    }
 
-        if (params) where.name = params
-
-        condition.where = where
-
-        return await Videogame.findAll(condition)
-
+    if (name) {
+        let filtrado = await Videogame.findAll(condition)
+        let filtradoFinal = filtrado.filter(game => game.name.toLowerCase() === name.toLowerCase())
+        return filtradoFinal
     } else {
-        return await Videogame.findAll({
-            include: {
-                model: Genre,
-                attributes: ['name'],
-                through: { attributes: [] }
-            }
-        })
+        return await Videogame.findAll(condition)
     }
 }
 
 const getAllGames = async () => {
-
     let gamesApi = await getApiGames()
     let gamesDb = await getDbGames()
-
     return gamesDb.concat(gamesApi)
 }
 
 const postGameDb = async (name, description, release_date, rating, platform, img, genre) => {
-
     const game = await Videogame.create({
         name,
         description,
@@ -93,23 +73,19 @@ const postGameDb = async (name, description, release_date, rating, platform, img
         rating,
         platform,
         img,
+        myGame: true
     })
     await postGenresInDb()
-    // genre?.forEach(async (gen) => {
-    //     await game.addGenre(gen)
-    // })
     let genresInDB = await Genre.findAll({
-        where : {
+        where: {
             name: genre
         }, attributes: ['id']
     })
     game.addGenre(genresInDB)
-
     return "Game created"
 }
 
 const getGenres = async () => {
-
     const genres = []
     let infoGenres = await axios(`https://api.rawg.io/api/genres?key=${API_KEY}`)
     infoGenres.data.results.map(genre => {
@@ -119,7 +95,6 @@ const getGenres = async () => {
 }
 
 const postGenresInDb = async () => {
-
     let apiGenres = await getGenres();
     apiGenres.forEach(genre => {
         Genre.findOrCreate({
@@ -130,12 +105,10 @@ const postGenresInDb = async () => {
 }
 
 const getGenresInDb = async () => {
-
     let generos = []
     let genresInDB = await Genre.findOne({
         where: { name: 'Action' }
     })
-
     if (genresInDB) {
         let genres = await Genre.findAll()
         let genresToJson = genres.map(gen => gen.toJSON())
@@ -145,17 +118,69 @@ const getGenresInDb = async () => {
         generos = postGenresInDb()
         return generos
     }
+}
 
+const orderByName = async (order) => {
+    let allGames = await getAllGames()
+    if (order === 'Ascendente') {
+        allGames.sort(function (a, b) {
+            if (a.name > b.name) {
+                return 1
+            }
+            if (b.name > a.name) {
+                return -1
+            }
+            return 0
+        })
+    }
+    else if (order === 'Descendente') {
+        allGames.sort(function (a, b) {
+            if (a.name > b.name) {
+                return -1
+            }
+            if (b.name > a.name) {
+                return 1
+            }
+            return 0
+        })
+    }
+    return allGames
+}
+
+const orderByRank = async (order) => {
+    let allGames = await getAllGames()
+    if (order === 'Menor') {
+        allGames.sort(function (a, b) {
+            if (a.rating > b.rating) {
+                return 1
+            }
+            if (b.rating > a.rating) {
+                return -1
+            }
+            return 0
+        })
+    }
+    else if (order === 'Mayor') {
+        allGames.sort(function (a, b) {
+            if (a.rating > b.rating) {
+                return -1
+            }
+            if (b.rating > a.rating) {
+                return 1
+            }
+            return 0
+        })
+    }
+    return allGames
 }
 
 
 router.get('/videogames', async (req, res, next) => {
-
     let name = req.query.name
     if (name) {
-
         let info = await axios(`https://api.rawg.io/api/games?search=${name}&key=${API_KEY}`)
         let gamesApi = info.data.results.map(game => {
+            //   if(game.name.toLowerCase() === name.toLowerCase()){
             return {
                 id: game.id,
                 name: game.name,
@@ -166,18 +191,15 @@ router.get('/videogames', async (req, res, next) => {
                 platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
             }
         })
-
         let gamesDb = await getDbGames(name);
+        gamesDb.filter(game => game.name.toLowerCase() === name.toLowerCase())
         let allFilterGames = gamesDb.concat(gamesApi);
-
         try {
             res.json(allFilterGames)
         } catch (error) {
             next(error)
         }
-
     } else {
-
         try {
             let games = await getAllGames();
             res.json(games)
@@ -188,7 +210,6 @@ router.get('/videogames', async (req, res, next) => {
 })
 
 router.get('/videogame/:id', async (req, res, next) => {
-
     let id = req.params.id
     try {
         if (id.length > 10) {
@@ -217,7 +238,6 @@ router.get('/videogame/:id', async (req, res, next) => {
     }
 })
 
-
 router.post('/videogame', async (req, res, next) => {
     let datos = req.body
     try {
@@ -231,7 +251,6 @@ router.post('/videogame', async (req, res, next) => {
 
 router.get('/genres', async (req, res, next) => {
     let generos = await getGenresInDb();
-
     try {
         res.json(generos)
     } catch (error) {
@@ -239,5 +258,24 @@ router.get('/genres', async (req, res, next) => {
     }
 })
 
+router.get('/nameOrder', async (req, res, next) => {
+    let order = req.query.order
+    let orderGames = await orderByName(order)
+    try {
+        res.json(orderGames)
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/rankOrder', async (req, res, next) => {
+    let order = req.query.order
+    let orderGames = await orderByRank(order)
+    try {
+        res.json(orderGames)
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router;

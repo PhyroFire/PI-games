@@ -1,46 +1,77 @@
 import { getAllVideogames } from "../Actions/Index";
-import { getAllGenres } from "../Actions/Index";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Game from './Game.jsx'
+import Paginado from "./Paginado.jsx";
+import React from "react";
+import FilterOrigin from "./FilterOrigin";
+import FilterRating from "./FilterRating";
+import FilterName from "./FilterName";
+import FilterGenre from "./FilterGenre";
+import SearchBar from "./SearchBar";
 
-
-export default function Home(){ 
+export default function Home() {
 
     const dispatch = useDispatch()
-    const videogames = useSelector(store => store.videogames)
-    const genres = useSelector(store => store.genres)
+    const allVideogames = useSelector(state => state.videogames)
 
-    useEffect(()=>{
+    const [currentPage, setCurrentPage] = useState(1)
+    const gamesXPage = 15
+    const indexOfLastGame = currentPage * gamesXPage
+    const indexOfFirstGame = indexOfLastGame - gamesXPage
+    const currentGames = allVideogames.slice(indexOfFirstGame, indexOfLastGame)
+
+
+    let pages = (pageNumber) => {
+        setCurrentPage(pageNumber)
+    }
+
+    useEffect(() => {
         dispatch(getAllVideogames())
-        dispatch(getAllGenres())
-    },[])
-
+    }, [])
 
     // por que no me deja escribir JS normal ?
-    return(
+    return (
         <div>
-            <h1>HOME PAGE</h1>
-            <select>
-                {
-                    genres&&genres.map( gen => {
+            <h1>Sergio Romero Game's Api 🔥</h1>
+
+            <FilterGenre />
+
+            <FilterOrigin />
+
+            <FilterRating />
+
+            <FilterName />
+
+            <SearchBar />
+
+            <Paginado
+                gamesXPage={gamesXPage}
+                allgames={allVideogames.length}
+                pages={pages}
+            />
+
+            {
+                currentGames.length ?
+                    currentGames.map(game => {
                         return (
-                           
-                            <option value={gen.name}>{gen.name}</option>
+                            <div>
+                                <Game name={game.name} img={game.img} genres={game.genres} id={game.id} />
+                            </div>
                         )
                     })
-                }
-            </select>
-            {
-                videogames?videogames.map( game => { 
-                    console.log(game)
-                    return (
-                        <Game name={game.name} img={game.img} genres={game.genres}/>
-                    )
-                })
-                :
-                <h1>cargando</h1>
+                    :
+                    <div>
+                        <h1>CARGANDO</h1>
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/b6e0b072897469.5bf6e79950d23.gif" alt="Cargando" width="400" height="200" />
+                    </div>
             }
+
+            <Paginado
+                gamesXPage={gamesXPage}
+                allgames={allVideogames.length}
+                pages={pages}
+            />
         </div>
     )
-  }
+}
