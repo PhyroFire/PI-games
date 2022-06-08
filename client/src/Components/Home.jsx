@@ -48,6 +48,10 @@ export default function Home() {
 
             <Link to={'/createGame'}><button>CREATE GAME!</button></Link>
 
+            <Link to={'/about'}><button>ABOUT THIS PAGE</button></Link>
+
+            <Link to='/'><button>Volver al inicio</button></Link>
+
             <Paginado
                 gamesXPage={gamesXPage}
                 allgames={allVideogames.length}
@@ -75,6 +79,8 @@ export default function Home() {
                 allgames={allVideogames.length}
                 pages={pages}
             />
+
+            <Link to='/'><button>Volver al inicio</button></Link>
         </div>
     )
 }

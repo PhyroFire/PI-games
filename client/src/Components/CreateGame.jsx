@@ -27,6 +27,7 @@ export default function CreateGame() {
     }, [])
 
     function handleInput(event) {
+        event.preventDefault()
         setImput({
             ...input,
             [event.target.name]: event.target.value
@@ -34,6 +35,7 @@ export default function CreateGame() {
     }
 
     function handleSelectGenre(event) {
+        event.preventDefault()
         setImput({
             ...input,
             genre: [...input.genre, event.target.value]
@@ -41,9 +43,28 @@ export default function CreateGame() {
     }
 
     function handleSelectPlatform(event) {
+        event.preventDefault()
         setImput({
             ...input,
             platform: [...input.platform, event.target.value]
+        })
+    }
+
+    function handleRemoveGenre(event) {
+        event.preventDefault()
+        let arrayFiltrado = input.genre.filter(genre => genre != event.target.value)
+        setImput({
+            ...input,
+            genre: arrayFiltrado
+        })
+    }
+
+    function handleRemovePlatform(event) {
+        event.preventDefault()
+        let arrayFiltrado = input.platform.filter(plat => plat != event.target.value)
+        setImput({
+            ...input,
+            platform: arrayFiltrado
         })
     }
 
@@ -65,16 +86,16 @@ export default function CreateGame() {
 
     return (
         <div>
-            <Link to='/home'><button>Home</button></Link>
+            <Link to='/home'><button>Volver al Home!</button></Link>
             <h1>Create your own game !</h1>
-            <form onSubmit={(event)=>handleSubmit(event)}>
+            <form onSubmit={(event) => handleSubmit(event)}>
                 <div>
                     <label>Name</label>
                     <input
                         type='text'
                         value={input.name}
                         name='name'
-                        onChange={(event)=>handleInput(event)}
+                        onChange={(event) => handleInput(event)}
                     />
                 </div>
                 <div>
@@ -83,7 +104,7 @@ export default function CreateGame() {
                         type='text'
                         value={input.description}
                         name='description'
-                        onChange={(event)=>handleInput(event)}
+                        onChange={(event) => handleInput(event)}
                     />
                 </div>
                 <div>
@@ -92,7 +113,7 @@ export default function CreateGame() {
                         type='date'
                         value={input.release_date}
                         name='release_date'
-                        onChange={(event)=>handleInput(event)}
+                        onChange={(event) => handleInput(event)}
                     />
                 </div>
                 <div>
@@ -102,7 +123,7 @@ export default function CreateGame() {
                         value={input.rating}
                         name='rating'
                         min="1" max="5"
-                        onChange={(event)=>handleInput(event)}
+                        onChange={(event) => handleInput(event)}
                     />
                 </div>
                 <div>
@@ -111,10 +132,10 @@ export default function CreateGame() {
                         type='text'
                         value={input.img}
                         name='img'
-                        onChange={(event)=>handleInput(event)}
+                        onChange={(event) => handleInput(event)}
                     />
                 </div>
-                <select onChange={(event)=>handleSelectGenre(event)}>
+                <select onChange={(event) => handleSelectGenre(event)}>
                     <option>-------</option>
                     {
                         allGenres && allGenres.map(gen => {
@@ -124,9 +145,9 @@ export default function CreateGame() {
                         })
                     }
                 </select>
-                <ul>{input.genre.map(gen => { return (<li>{gen}</li>) })}</ul>
+                <ul>{input.genre.map(gen => { return (<li>{gen}<button value={gen} onClick={(event) => handleRemoveGenre(event)}>X</button></li>) })}</ul>
 
-                <select onChange={(event)=>handleSelectPlatform(event)}>
+                <select onChange={(event) => handleSelectPlatform(event)}>
                     <option>-------</option>
                     {
                         allPlatforms && allPlatforms.map(plat => {
@@ -136,7 +157,7 @@ export default function CreateGame() {
                         })
                     }
                 </select>
-                <ul>{input.platform.map(plat => { return (<li>{plat}</li>) })}</ul>
+                <ul>{input.platform.map(plat => { return (<li>{plat}<button value={plat} onClick={(event) => handleRemovePlatform(event)}>X</button></li>) })}</ul>
 
                 <button type="submit">Create Game</button>
             </form>

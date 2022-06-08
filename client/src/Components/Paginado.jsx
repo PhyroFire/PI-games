@@ -8,6 +8,10 @@ export default function Paginado({ gamesXPage, allgames, pages }) {
         pageNumbers.push(index)
     }
 
+    if (pageNumbers < 2) {
+        pages(1)
+    }
+
     return (
         <nav>
             <ul>

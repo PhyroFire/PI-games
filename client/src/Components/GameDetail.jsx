@@ -57,7 +57,7 @@ export default function Detail() {
                 })
             }
 
-            <Link to='/home'><button>HOME</button></Link>
+            <Link to='/home'><button>Volver al Home!</button></Link>
 
         </div>
     )

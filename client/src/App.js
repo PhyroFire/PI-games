@@ -5,6 +5,7 @@ import Home from './Components/Home.jsx'
 import React from "react";
 import GameDetail from './Components/GameDetail.jsx'
 import CreateGame from './Components/CreateGame';
+import About from './Components/About';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path='/home' element={<Home />} />
         <Route path='/createGame' element={<CreateGame/>} />
         <Route path='/videogame/:id' element={<GameDetail />} />
+        <Route path='/about' element={<About/>} />
       </Routes>
     </Router>
   );
