@@ -1,7 +1,9 @@
 const initialState = {
     videogames: [],
     genres: [],
-    allVideogames: []
+    allVideogames: [],
+    platforms: [],
+    videogame: []
 }
 
 export default function rootReducer(state = initialState, action) {
@@ -20,6 +22,11 @@ export default function rootReducer(state = initialState, action) {
                 ...state,
                 genres: action.payload
             }
+        case 'GET_ALL_PLATFORMS':
+            return {
+                ...state,
+                platforms: action.payload,
+            }
         case 'GET_GAME_BY_NAME':
             return {
                 ...state,
@@ -28,7 +35,7 @@ export default function rootReducer(state = initialState, action) {
         case 'GET_GAME_BY_ID':
             return {
                 ...state,
-                videogames: action.payload
+                videogame: action.payload
             }
         case 'GET_GAMES_BY_GENRE':
             const gamesGenre = action.payload === 'All' ? allGames : allGames.filter(game => game.genres.find(genre => genre === action.payload || genre.name === action.payload))
@@ -52,6 +59,7 @@ export default function rootReducer(state = initialState, action) {
                 ...state,
                 videogames: action.payload
             }
+
         default: return state
     }
 }

@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
     img: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
     },
     myGame: {
       type: DataTypes.BOOLEAN,

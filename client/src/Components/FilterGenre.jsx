@@ -5,8 +5,8 @@ import { getGamesByGenre, getAllGenres } from "../Actions/Index";
 
 export default function FilterGenre() {
 
-    const allGenres = useSelector(state => state.genres)
     const dispatch = useDispatch()
+    const allGenres = useSelector(state => state.genres)
     
     useEffect(() => {
         dispatch(getAllGenres())

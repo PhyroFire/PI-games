@@ -9,6 +9,7 @@ import FilterRating from "./FilterRating";
 import FilterName from "./FilterName";
 import FilterGenre from "./FilterGenre";
 import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 
 export default function Home() {
 
@@ -44,6 +45,8 @@ export default function Home() {
             <FilterName />
 
             <SearchBar />
+
+            <Link to={'/createGame'}><button>CREATE GAME!</button></Link>
 
             <Paginado
                 gamesXPage={gamesXPage}

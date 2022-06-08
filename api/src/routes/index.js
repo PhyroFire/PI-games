@@ -76,12 +76,14 @@ const postGameDb = async (name, description, release_date, rating, platform, img
         myGame: true
     })
     await postGenresInDb()
+
     let genresInDB = await Genre.findAll({
         where: {
             name: genre
         }, attributes: ['id']
     })
     game.addGenre(genresInDB)
+
     return "Game created"
 }
 
@@ -92,6 +94,15 @@ const getGenres = async () => {
         genres.push({ name: genre.name, id: genre.id })
     })
     return genres
+}
+
+const getPlatforms = async () => {
+    const platforms = []
+    let infoPlataforms = await axios(`https://api.rawg.io/api/platforms?key=${API_KEY}`)
+    infoPlataforms.data.results.map(plat => {
+        platforms.push(plat.name)
+    })
+    return platforms
 }
 
 const postGenresInDb = async () => {
@@ -240,8 +251,9 @@ router.get('/videogame/:id', async (req, res, next) => {
 
 router.post('/videogame', async (req, res, next) => {
     let datos = req.body
+    console.log(datos)
     try {
-        let juegoCreado = postGameDb(datos.name, datos.description, datos.release_date,
+        let juegoCreado = await postGameDb(datos.name, datos.description, datos.release_date,
             datos.rating, datos.platform, datos.img, datos.genre)
         res.json(juegoCreado)
     } catch (error) {
@@ -273,6 +285,15 @@ router.get('/rankOrder', async (req, res, next) => {
     let orderGames = await orderByRank(order)
     try {
         res.json(orderGames)
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.get('/platforms', async (req, res, next) => {
+    let plataformas = await getPlatforms();
+    try {
+        res.json(plataformas)
     } catch (error) {
         next(error)
     }

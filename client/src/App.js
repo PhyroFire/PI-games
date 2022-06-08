@@ -4,6 +4,7 @@ import LandingPage from './Components/LandingPage.jsx'
 import Home from './Components/Home.jsx'
 import React from "react";
 import GameDetail from './Components/GameDetail.jsx'
+import CreateGame from './Components/CreateGame';
 
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
       <Routes>
         <Route exact path='/' element={<LandingPage />} />
         <Route path='/home' element={<Home />} />
-        <Route path={'/videogame/:id'} element={<GameDetail />} />
+        <Route path='/createGame' element={<CreateGame/>} />
+        <Route path='/videogame/:id' element={<GameDetail />} />
       </Routes>
     </Router>
   );

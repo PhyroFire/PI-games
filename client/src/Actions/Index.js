@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 export function getAllVideogames() {
     return function (dispatch) {
         fetch('http://localhost:3001/videogames')
@@ -15,6 +17,17 @@ export function getAllGenres() {
             .then(res => res.json())
             .then(resToJson => dispatch({
                 type: 'GET_ALL_GENRES',
+                payload: resToJson
+            }))
+    }
+}
+
+export function getAllPlatforms() {
+    return function (dispatch) {
+        fetch('http://localhost:3001/platforms')
+            .then(res => res.json())
+            .then(resToJson => dispatch({
+                type: 'GET_ALL_PLATFORMS',
                 payload: resToJson
             }))
     }
@@ -80,5 +93,11 @@ export function orderByRank(order) {
                 type: 'ORDER_BY_RANK',
                 payload: resToJson
             }))
+    }
+}
+
+export function postGame(payload) {
+    return async function () {
+        await axios.post(`http://localhost:3001/videogame`, payload)
     }
 }
