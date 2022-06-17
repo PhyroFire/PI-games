@@ -11,9 +11,8 @@ export default function FilterName() {
 
     return (
         <div>
-            <label>Ordenar alfabeticamente</label>
             <select onChange={event => handleOrderByName(event)}>
-                <option>-------</option>
+                <option>Order by ABC</option>
                 <option value='Ascendente'>A - Z</option>
                 <option value='Descendente'>Z - A</option>
             </select>

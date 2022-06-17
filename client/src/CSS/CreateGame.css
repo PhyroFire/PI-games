@@ -1,0 +1,49 @@
+.CreateGame{
+    color: rgb(255, 255, 255);
+    background-image: url('../CSS/Created.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 1000px;
+}
+
+.CreateGame h1 {
+    font-size: 60px;
+    text-align: center;
+    color: rgb(255, 0, 0);
+}
+
+.Form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Label{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.Label input{
+    opacity: 60%;
+}
+
+.Select {
+    display: flex;
+    margin: 15px;
+    align-items: center;
+}
+
+.CreateGame label{
+    color: black;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#Description {
+    border-radius: 20px;
+    opacity: 60%;
+}
+

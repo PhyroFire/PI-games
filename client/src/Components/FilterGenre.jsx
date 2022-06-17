@@ -7,20 +7,19 @@ export default function FilterGenre() {
 
     const dispatch = useDispatch()
     const allGenres = useSelector(state => state.genres)
-    
+
     useEffect(() => {
         dispatch(getAllGenres())
-    },[])
-        
+    }, [])
+
     function handleGenreFilter(event) {
         dispatch(getGamesByGenre(event.target.value))
     }
 
     return (
         <div>
-            <label>Ordenar por genero</label>
             <select onChange={event => handleGenreFilter(event)}>
-                <option>-------</option>
+                <option>Order by Genre</option>
                 <option value='All'>All</option>
                 {
                     allGenres && allGenres.map(gen => {

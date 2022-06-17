@@ -1,4 +1,23 @@
-.App {
+@font-face {
+  font-family: 'Assassins';
+  src: url('../src/CSS/Assassin$.ttf') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+
+body {
+  font-family: 'Assassins';
+}
+
+button {
+  font-family: 'Assassins';
+}
+
+select {
+  font-family: 'Assassins';
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +54,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

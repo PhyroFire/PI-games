@@ -1,0 +1,84 @@
+.Nav_Home{
+    display: flex;
+    justify-content: center;
+    margin: 15px;
+}
+
+.MainNav{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.TOP {
+    position: sticky;
+}
+
+.TOP video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: multiply;
+}
+
+.TOP h1 {
+    font-size: 100px;
+    text-align: center;
+    color: rgb(255, 0, 0);
+}
+
+.Home {
+    background-image: url('../CSS/Background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.Nav_Home {
+    display: flex;
+}
+
+.Cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.Home h2 {
+    font-family: 'Assassins';
+    font-size: 50px;
+    text-align: center;
+}
+
+button{
+    cursor: pointer;
+    padding: 10px 40px;
+    background: rgb(0, 0, 0);
+    border: none;
+    color: white;
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px -5px #20202050;
+}
+
+button:hover{
+    box-shadow: 5px 5px 20px #ffffff;
+}
+
+input {
+    padding: 10px 40px;
+    border: none;
+    color: rgb(0, 0, 0);
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px -5px #20202050;
+}
+
+select {
+    padding: 10px 40px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: 1px 1px 10px -5px #20202050;
+}

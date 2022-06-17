@@ -1,0 +1,18 @@
+.About{
+    background-image: url('../CSS/About.jpg');
+    background-size: cover;
+    background-position: center;
+    height:900px;
+    width: 1400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.About h1, h2 {
+    color: red;
+}

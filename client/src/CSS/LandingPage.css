@@ -1,0 +1,40 @@
+.landing {
+    position: relative;
+}
+
+.landing video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.landing h1{
+    background: rgb(0, 0, 0);
+    font-size: 200px;
+    text-align: center;
+    mix-blend-mode: multiply;
+}
+
+.landing a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.landing h1:hover {
+    text-decoration: underline;
+}
+
+.body_landing h3{
+    color: white;
+    font-size: 40px;
+    text-align: center;
+}
+
+.body_landing p{
+    color: white;
+    font-size: 40px;
+    text-align: center;
+}

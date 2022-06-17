@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { filterMyGames } from "../Actions/Index";
 
 export default function FilterOrigin() {
-    
+
     const dispatch = useDispatch()
     function handleMyGames(event) {
         dispatch(filterMyGames(event.target.value))
@@ -11,12 +11,11 @@ export default function FilterOrigin() {
 
     return (
         <div>
-            <label>Ordenar por origen</label>
             <select onChange={event => handleMyGames(event)}>
-                <option>-------</option>
-                <option value='All'>Todos los juegos</option>
-                <option value='My Games'>Juegos creados</option>
-                <option value='Api'>Juegos en API</option>
+                <option>Origin</option>
+                <option value='All'>All games</option>
+                <option value='My Games'>Created games</option>
+                <option value='Api'>API's RAWG games</option>
             </select>
         </div>
     )

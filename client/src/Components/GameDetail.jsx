@@ -4,7 +4,7 @@ import { getGamesById } from "../Actions/Index";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import '../CSS/GameDetail.css'
 
 export default function Detail() {
 
@@ -18,16 +18,16 @@ export default function Detail() {
     }, [])
 
     return (
-        <div>
+        <div className="GameDetail">
 
             <h1>{videogame.name}</h1>
-            <img src={videogame.img} alt={videogame.name} width="1000" height="600" />
+            <img src={videogame.img} alt={videogame.name} />
 
             <h3>Game ID in API :</h3>
             <p>{videogame.id}</p>
 
             <h3>Rating :</h3>
-            <p>{videogame.rating}</p>
+            <p> ★ {videogame.rating}</p>
 
             <h3>Description :</h3>
             <p>{videogame.description}</p>
@@ -57,7 +57,7 @@ export default function Detail() {
                 })
             }
 
-            <Link to='/home'><button>Volver al Home!</button></Link>
+            <Link to='/home'><button>Back to Home</button></Link>
 
         </div>
     )

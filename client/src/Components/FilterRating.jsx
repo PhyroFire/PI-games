@@ -11,11 +11,10 @@ export default function FilterRating() {
 
     return (
         <div>
-            <label>Ordenar por rating</label>
             <select onChange={event => handleOrderByRank(event)}>
-                <option>-------</option>
-                <option value='Mayor'>Mayor rating</option>
-                <option value='Menor'>Menor rating</option>
+                <option>Order by Rating</option>
+                <option value='Mayor'>Rating +</option>
+                <option value='Menor'>Rating -</option>
             </select>
         </div>
     )

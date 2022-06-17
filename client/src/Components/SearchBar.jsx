@@ -23,10 +23,10 @@ export default function SearchBar() {
             <input
                 value={name}
                 type='text'
-                placeholder="Buscar..."
+                placeholder="Search game..."
                 onChange={(event) => handleInput(event)}
             />
-            <button type="submit" onClick={(event) => handleSubmit(event)}>Buscar</button>
+            <button type="submit" onClick={(event) => handleSubmit(event)}>Search</button>
         </div>
     )
 

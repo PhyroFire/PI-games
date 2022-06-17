@@ -1,4 +1,5 @@
 import React from "react";
+import '../CSS/Paginado.css'
 
 export default function Paginado({ gamesXPage, allgames, pages }) {
 
@@ -8,13 +9,13 @@ export default function Paginado({ gamesXPage, allgames, pages }) {
         pageNumbers.push(index)
     }
 
-    if (pageNumbers < 2) {
+    if (pageNumbers < 7) { // ARREGLAR
         pages(1)
     }
 
     return (
         <nav>
-            <ul>
+            <ul className="Paginado">
                 {
                     pageNumbers &&
                     pageNumbers.map(number => {

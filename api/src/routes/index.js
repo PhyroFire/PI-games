@@ -251,7 +251,6 @@ router.get('/videogame/:id', async (req, res, next) => {
 
 router.post('/videogame', async (req, res, next) => {
     let datos = req.body
-    console.log(datos)
     try {
         let juegoCreado = await postGameDb(datos.name, datos.description, datos.release_date,
             datos.rating, datos.platform, datos.img, datos.genre)

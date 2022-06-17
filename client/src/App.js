@@ -4,8 +4,8 @@ import LandingPage from './Components/LandingPage.jsx'
 import Home from './Components/Home.jsx'
 import React from "react";
 import GameDetail from './Components/GameDetail.jsx'
-import CreateGame from './Components/CreateGame';
-import About from './Components/About';
+import CreateGame from './Components/CreateGame.jsx';
+import About from './Components/About.jsx';
 
 
 function App() {

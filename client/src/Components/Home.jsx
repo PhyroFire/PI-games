@@ -10,6 +10,9 @@ import FilterName from "./FilterName";
 import FilterGenre from "./FilterGenre";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
+import '../CSS/Home.css'
+import Loading from '../CSS/Loading.gif'
+import video from '../CSS/Assassins_Creed_Trailer_Trim.mp4'
 
 export default function Home() {
 
@@ -31,48 +34,37 @@ export default function Home() {
         dispatch(getAllVideogames())
     }, [])
 
-    // por que no me deja escribir JS normal ?
+
     return (
-        <div>
-            <h1>Sergio Romero Game's Api 🔥</h1>
+        <div className="Home">
+            <div className="TOP">
+                <video autoPlay preload="auto" muted loop src={video}></video>
 
-            <FilterGenre />
+                <h1>🎮 Henry Game's Proyect 🎮</h1>
 
-            <FilterOrigin />
+            </div>
+            <div className="MainNav">
 
-            <FilterRating />
+                <SearchBar />
 
-            <FilterName />
+                <Link to={'/createGame'}><button>CREATE GAME!</button></Link>
 
-            <SearchBar />
+                <Link to={'/about'}><button>ABOUT THIS PAGE</button></Link>
 
-            <Link to={'/createGame'}><button>CREATE GAME!</button></Link>
+                <Link to='/'><button>Back to start</button></Link>
 
-            <Link to={'/about'}><button>ABOUT THIS PAGE</button></Link>
+            </div>
 
-            <Link to='/'><button>Volver al inicio</button></Link>
+            <nav className="Nav_Home">
+                <FilterGenre />
 
-            <Paginado
-                gamesXPage={gamesXPage}
-                allgames={allVideogames.length}
-                pages={pages}
-            />
+                <FilterOrigin />
 
-            {
-                currentGames.length ?
-                    currentGames.map(game => {
-                        return (
-                            <div>
-                                <Game name={game.name} img={game.img} genres={game.genres} id={game.id} />
-                            </div>
-                        )
-                    })
-                    :
-                    <div>
-                        <h1>CARGANDO</h1>
-                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/b6e0b072897469.5bf6e79950d23.gif" alt="Cargando" width="400" height="200" />
-                    </div>
-            }
+                <FilterRating />
+
+                <FilterName />
+            </nav>
+
 
             <Paginado
                 gamesXPage={gamesXPage}
@@ -80,7 +72,30 @@ export default function Home() {
                 pages={pages}
             />
 
-            <Link to='/'><button>Volver al inicio</button></Link>
+            <div className="Cards">
+                {
+                    currentGames.length ?
+                        currentGames.map(game => {
+                            return (
+                                <div>
+                                    <Game name={game.name} img={game.img} genres={game.genres} rating={game.rating} id={game.id} />
+                                </div>
+                            )
+                        })
+                        :
+                        <div>
+                            <h2>Loading...</h2>
+                            <img src={Loading} alt="Cargando" />
+                        </div>
+
+                }
+            </div>
+
+            <Paginado
+                gamesXPage={gamesXPage}
+                allgames={allVideogames.length}
+                pages={pages}
+            />
         </div>
     )
 }
