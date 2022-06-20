@@ -1,10 +1,15 @@
-.CreateGame{
+.CreateGame {
     color: rgb(255, 255, 255);
     background-image: url('../CSS/Created.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    height: 1000px;
+}
+
+.CreateGame img {
+    width: 250px;
+    height: 280px;
+    display: flex;
 }
 
 .CreateGame h1 {
@@ -13,20 +18,24 @@
     color: rgb(255, 0, 0);
 }
 
-.Form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.Select button {
+    padding: 10px 10px;
 }
 
-.Label{
+.Form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+}
+
+.Label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin: 10px;
 }
 
-.Label input{
+.Label input {
     opacity: 60%;
 }
 
@@ -36,14 +45,32 @@
     align-items: center;
 }
 
-.CreateGame label{
+.Select li {
+    color: black;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.CreateGame label {
     color: black;
     font-size: 40px;
     font-weight: bold;
 }
 
 #Description {
-    border-radius: 20px;
+    border-radius: 10px;
     opacity: 60%;
 }
 
+#imagenJuego {
+    float: right;
+    margin-top: 200px;
+    margin-right: 200px;
+}
+
+#submit {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 80px;
+}

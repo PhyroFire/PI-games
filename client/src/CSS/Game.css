@@ -11,12 +11,14 @@
     text-align: center;
 }
 
+
 .card:hover{
     background-image: url('../CSS/Logo.gif');
     background-size: cover;
     background-position: center;
     transform: translateY(-15px);
     box-shadow: 20px 20px 30px rgba(0,0,0,0.7);
+    color: white;
  }
 
 .card a {
@@ -30,14 +32,16 @@
 }
 
 .genres {
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-size: large;
     display: flex;
     justify-content: space-evenly;
     font-weight: bold;
+    height: 35px;
 }
 
 #rating {
-    color: black;
+    color: rgb(255, 0, 0);
     font-size: 25px;
     display: flex;
     margin: 0px;

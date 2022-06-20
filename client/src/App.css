@@ -17,6 +17,34 @@ select {
   font-family: 'Assassins';
 }
 
+button{
+  cursor: pointer;
+  padding: 10px 40px;
+  background: rgb(0, 0, 0);
+  border: none;
+  color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px -5px #20202050;
+}
+
+button:hover{
+  box-shadow: 5px 5px 20px #ffffff;
+}
+
+input {
+  padding: 10px 40px;
+
+  color: rgb(0, 0, 0);
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px -5px #20202050;
+}
+
+select {
+  padding: 10px 40px;
+
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px -5px #20202050;
+}
 /* .App {
   text-align: center;
 }

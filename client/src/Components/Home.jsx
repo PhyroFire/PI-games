@@ -34,14 +34,11 @@ export default function Home() {
         dispatch(getAllVideogames())
     }, [])
 
-
     return (
         <div className="Home">
             <div className="TOP">
-                <video autoPlay preload="auto" muted loop src={video}></video>
-
                 <h1>🎮 Henry Game's Proyect 🎮</h1>
-
+                <video autoPlay preload="auto" muted loop src={video}></video>
             </div>
             <div className="MainNav">
 
@@ -74,7 +71,7 @@ export default function Home() {
 
             <div className="Cards">
                 {
-                    currentGames.length ?
+                    currentGames.length > 0 ?
                         currentGames.map(game => {
                             return (
                                 <div>
@@ -87,7 +84,6 @@ export default function Home() {
                             <h2>Loading...</h2>
                             <img src={Loading} alt="Cargando" />
                         </div>
-
                 }
             </div>
 

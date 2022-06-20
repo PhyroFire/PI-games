@@ -185,26 +185,48 @@ const orderByRank = async (order) => {
     return allGames
 }
 
+const filtrado = async (nombreJuego, nombreQuery) => { // VER IMPLEMENTACION, YA QUE PRIMERO FILTRA EN LA DB
+    nombreJuego.toLowerCase().split("")
+    nombreQuery.toLowerCase().split("")
+
+    for (let index = 0; index < nombreQuery.length; index++) {
+
+        if (nombreQuery[index] === nombreJuego[index]) {
+            index++
+        }
+        if (nombreQuery[index] === nombreQuery.length - 1) {
+            return nombreJuego
+        }
+    }
+}
+
+const buscarEnApi = async (name) => {
+
+    let info = await axios(`https://api.rawg.io/api/games?search=${name}&key=${API_KEY}`)
+    let juegosapi = info.data.results.map(game => {
+        //   if(game.name.toLowerCase() === name.toLowerCase()){
+        return {
+            id: game.id,
+            name: game.name,
+            release_date: game.released,
+            rating: game.rating,
+            img: game.background_image,
+            genres: game.genres.map(obj => obj.name), // array de generos
+            platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
+        }
+    })
+
+    return juegosapi
+}
 
 router.get('/videogames', async (req, res, next) => {
     let name = req.query.name
     if (name) {
-        let info = await axios(`https://api.rawg.io/api/games?search=${name}&key=${API_KEY}`)
-        let gamesApi = info.data.results.map(game => {
-            //   if(game.name.toLowerCase() === name.toLowerCase()){
-            return {
-                id: game.id,
-                name: game.name,
-                release_date: game.released,
-                rating: game.rating,
-                img: game.background_image,
-                genres: game.genres.map(obj => obj.name), // array de generos
-                platform: game.platforms.map(obj => obj.platform.name), // array de plataformas
-            }
-        })
+        let info = await buscarEnApi(name)
         let gamesDb = await getDbGames(name);
         gamesDb.filter(game => game.name.toLowerCase() === name.toLowerCase())
-        let allFilterGames = gamesDb.concat(gamesApi);
+        // gamesDb.forEach(game => filtrado(game.name, name))
+        let allFilterGames = gamesDb.concat(info);
         try {
             res.json(allFilterGames)
         } catch (error) {
