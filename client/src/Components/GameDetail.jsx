@@ -21,7 +21,6 @@ export default function Detail() {
     function handleDelete(event){
         event.preventDefault()
         dispatch(deleteGame(videogame.id))
-        // confirm("Game deleted") VER IMPLEMENTACION
         navigate("/home");
     }
 
@@ -70,7 +69,7 @@ export default function Detail() {
             {
                 videogame.myGame &&
                 <div id="deleteGame">
-                    <button onClick={(event)=>handleDelete(event)}>Delete Game</button>
+                    <button onClick={(event)=>{if(window.confirm("Delete game?"))handleDelete(event)}}>Delete Game</button>
                 </div>
             }
 
