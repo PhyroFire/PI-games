@@ -41,6 +41,7 @@
 
 .Nav_Home {
     display: flex;
+    justify-content: space-evenly;
 }
 
 .Cards {
@@ -53,4 +54,8 @@
     font-family: 'Assassins';
     font-size: 50px;
     text-align: center;
+}
+
+#backToHome {
+    margin: 20px;
 }

@@ -19,7 +19,7 @@ export default function About() {
 
             <div>
                 <Link to='/home'>
-                    <button>Back to Home</button>
+                    <button id="backToHome">Back to Home</button>
                 </Link>
             </div>
         </div>

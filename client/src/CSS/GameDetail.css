@@ -26,3 +26,13 @@
     font-size: 40px;
     text-decoration: underline rgb(255, 0, 0);
 }
+
+#description {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+}
+
+#deleteGame {
+    padding: 20px 20px;
+}

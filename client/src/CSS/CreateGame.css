@@ -64,13 +64,11 @@
 
 #imagenJuego {
     float: right;
-    margin-top: 200px;
+    margin-top: 400px;
     margin-right: 200px;
 }
 
 #submit {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
     padding: 20px 80px;
+    margin: 20px;
 }

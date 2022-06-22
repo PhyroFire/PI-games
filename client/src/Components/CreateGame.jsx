@@ -26,7 +26,7 @@ export default function CreateGame() {
     useEffect(() => {
         dispatch(getAllGenres())
         dispatch(getAllPlatforms())
-    }, [])
+    },[])
 
     function handleInput(event) {
         event.preventDefault()
@@ -103,9 +103,9 @@ export default function CreateGame() {
     return (
         <div className="CreateGame">
 
-            <Link to='/home'><button>Back to Home!</button></Link>
+            <Link to='/home'><button id="backToHome">Back to Home!</button></Link>
 
-            <img id="imagenJuego" src={input.img}></img>
+            <img id="imagenJuego" alt={input.img} src={input.img}></img>
             <h1>Create your own game !</h1>
             <form onSubmit={(event) => handleSubmit(event)} className="Form">
 

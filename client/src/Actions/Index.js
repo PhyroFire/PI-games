@@ -101,3 +101,9 @@ export function postGame(payload) {
         await axios.post(`http://localhost:3001/videogame`, payload)
     }
 }
+
+export function deleteGame(id) {
+    return async function () {
+        await axios.delete(`http://localhost:3001/videogame/${id}`)
+    }
+}

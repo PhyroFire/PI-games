@@ -9,7 +9,7 @@ export default function Paginado({ gamesXPage, allgames, pages }) {
         pageNumbers.push(index)
     }
 
-    if (pageNumbers < 7) { // ARREGLAR
+    if (pageNumbers < 2) { // ARREGLAR
         pages(1)
     }
 

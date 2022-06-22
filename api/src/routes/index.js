@@ -51,8 +51,13 @@ const getDbGames = async (name) => {
     }
 
     if (name) {
-        let filtrado = await Videogame.findAll(condition)
-        let filtradoFinal = filtrado.filter(game => game.name.toLowerCase() === name.toLowerCase())
+        let games = await Videogame.findAll(condition)
+        let filtradoFinal = games.filter(game => {
+            let ok = filtrado(game.name, name)
+            if (ok) {
+                return game
+            }
+        })
         return filtradoFinal
     } else {
         return await Videogame.findAll(condition)
@@ -63,6 +68,13 @@ const getAllGames = async () => {
     let gamesApi = await getApiGames()
     let gamesDb = await getDbGames()
     return gamesDb.concat(gamesApi)
+}
+
+const filtrado = (nombreJuego, nombreQuery) => {
+    let juego = nombreJuego.toLowerCase();
+    let query = nombreQuery.toLowerCase();
+    let finded = juego.includes(query)
+    return finded
 }
 
 const postGameDb = async (name, description, release_date, rating, platform, img, genre) => {
@@ -185,26 +197,10 @@ const orderByRank = async (order) => {
     return allGames
 }
 
-const filtrado = async (nombreJuego, nombreQuery) => { // VER IMPLEMENTACION, YA QUE PRIMERO FILTRA EN LA DB
-    nombreJuego.toLowerCase().split("")
-    nombreQuery.toLowerCase().split("")
-
-    for (let index = 0; index < nombreQuery.length; index++) {
-
-        if (nombreQuery[index] === nombreJuego[index]) {
-            index++
-        }
-        if (nombreQuery[index] === nombreQuery.length - 1) {
-            return nombreJuego
-        }
-    }
-}
-
-const buscarEnApi = async (name) => {
+const getInApi = async (name) => {
 
     let info = await axios(`https://api.rawg.io/api/games?search=${name}&key=${API_KEY}`)
     let juegosapi = info.data.results.map(game => {
-        //   if(game.name.toLowerCase() === name.toLowerCase()){
         return {
             id: game.id,
             name: game.name,
@@ -222,11 +218,9 @@ const buscarEnApi = async (name) => {
 router.get('/videogames', async (req, res, next) => {
     let name = req.query.name
     if (name) {
-        let info = await buscarEnApi(name)
+        let gamesInApi = await getInApi(name)
         let gamesDb = await getDbGames(name);
-        gamesDb.filter(game => game.name.toLowerCase() === name.toLowerCase())
-        // gamesDb.forEach(game => filtrado(game.name, name))
-        let allFilterGames = gamesDb.concat(info);
+        let allFilterGames = gamesDb.concat(gamesInApi);
         try {
             res.json(allFilterGames)
         } catch (error) {
@@ -315,6 +309,23 @@ router.get('/platforms', async (req, res, next) => {
     let plataformas = await getPlatforms();
     try {
         res.json(plataformas)
+    } catch (error) {
+        next(error)
+    }
+})
+
+router.delete('/videogame/:id', async (req, res, next) => {
+    let id = req.params.id
+    try {
+        let resultado = await Videogame.findByPk(id)
+        if (resultado) {
+            Videogame.destroy({
+                where: {
+                    id: id
+                }
+            })
+            res.json("Game deleted")
+        }
     } catch (error) {
         next(error)
     }
