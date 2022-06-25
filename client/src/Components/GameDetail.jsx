@@ -12,7 +12,7 @@ export default function Detail() {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const videogame = useSelector(state => state.videogame)
-    const { id } = useParams() // usar el parametro de la URL
+    const { id } = useParams() // usa el parametro de la URL
 
     useEffect(() => {
         dispatch(getGamesById(id))

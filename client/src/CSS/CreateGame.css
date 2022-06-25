@@ -13,9 +13,10 @@
 }
 
 .CreateGame h1 {
-    font-size: 60px;
+    font-size: 50px;
     text-align: center;
     color: rgb(255, 0, 0);
+    margin: 10px;
 }
 
 .Select button {
@@ -41,7 +42,7 @@
 
 .Select {
     display: flex;
-    margin: 15px;
+    margin: 5px;
     align-items: center;
 }
 
@@ -49,6 +50,12 @@
     color: black;
     font-weight: bolder;
     font-size: 20px;
+    list-style: none;
+}
+
+.Select ul {
+    display: flex;
+    margin: 0px;
 }
 
 .CreateGame label {
@@ -64,7 +71,7 @@
 
 #imagenJuego {
     float: right;
-    margin-top: 400px;
+    margin-top: 300px;
     margin-right: 200px;
 }
 

@@ -67,11 +67,14 @@ export default function Home() {
                 gamesXPage={gamesXPage}
                 allgames={allVideogames.length}
                 pages={pages}
+                currentPage={currentPage}
             />
 
             <div className="Cards">
                 {
                     currentGames.length > 0 ?
+
+                        typeof currentGames === "object"?
                         currentGames.map(game => {
                             return (
                                 <div>
@@ -80,6 +83,8 @@ export default function Home() {
                             )
                         })
                         :
+                        <h1>{currentGames}</h1>
+                        :
                         <div>
                             <h2>Loading...</h2>
                             <img src={Loading} alt="Cargando" />
@@ -87,11 +92,7 @@ export default function Home() {
                 }
             </div>
 
-            <Paginado
-                gamesXPage={gamesXPage}
-                allgames={allVideogames.length}
-                pages={pages}
-            />
+   
         </div>
     )
 }

@@ -6,7 +6,7 @@ const { API_KEY } = process.env;
 const axios = require('axios');
 const { Videogame, Genre } = require('../db');
 const router = Router();
-// const {getAllGames, getDbGames, postGameDb, getGenresInDb} = require ('./functions.js') // ARREGLAR PARA MODULARIZAR !!
+
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
@@ -222,7 +222,7 @@ router.get('/videogames', async (req, res, next) => {
         let gamesDb = await getDbGames(name);
         let allFilterGames = gamesDb.concat(gamesInApi);
         try {
-            res.json(allFilterGames)
+            res.json(allFilterGames.length ? allFilterGames : "Not found")
         } catch (error) {
             next(error)
         }
