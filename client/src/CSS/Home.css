@@ -38,6 +38,8 @@
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    min-width: 100%;
+    min-height: 1060px;
 }
 
 .Nav_Home {

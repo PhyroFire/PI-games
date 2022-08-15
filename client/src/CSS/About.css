@@ -2,7 +2,8 @@
     background-image: url('../CSS/About.jpg');
     background-size: cover;
     background-position: center;
-    height:900px;
+    min-width: 100%;
+    min-height: 1060px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -15,4 +16,9 @@
 .About h1, h2 {
     color: red;
     text-decoration: underline rgb(0, 0, 0);
+}
+
+#Sergio_Romero {
+    width: 360px;
+    height: 430px;
 }

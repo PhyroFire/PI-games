@@ -9,7 +9,7 @@ export default function LandingPage() {
         <div className="body_landing">
 
             <div className="landing">
-                <video autoPlay preload="auto" loop src={video}></video>
+            <video autoPlay="autoplay" muted type={"video/mp4"} preload="auto" loop src={video}></video>
 
                 <Link to='/home'>
                     <h1>Henry Game's Proyect</h1>

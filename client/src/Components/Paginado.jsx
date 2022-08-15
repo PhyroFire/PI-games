@@ -1,17 +1,12 @@
 import React from "react";
 import '../CSS/Paginado.css'
 
-export default function Paginado({ gamesXPage, allgames, pages, currentPage }) {
+export default function Paginado({ gamesXPage, allgames, pages }) {
 
     let pageNumbers = []
 
     for (let index = 1; index <= Math.ceil(allgames / gamesXPage); index++) {
         pageNumbers.push(index)
-    }
-
-    if (currentPage > pageNumbers.length) { // ARREGLAR
-        console.log(pageNumbers)
-        pages(1)
     }
 
     return (

@@ -12,7 +12,7 @@ export default function Game({ name, img, genres, id, rating }) {
                     {
                         genres.map(gen => {
                             return (
-                                <div>
+                                <div key={gen}>
                                     <p>{gen.name ? gen.name : gen}</p>
                                 </div>
                             )

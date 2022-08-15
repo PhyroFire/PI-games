@@ -1,18 +1,21 @@
 import { getAllVideogames } from "../Actions/Index";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Game from './Game.jsx'
-import Paginado from "./Paginado.jsx";
+import { Link } from "react-router-dom";
 import React from "react";
+
+import Games from './Games.jsx'
+import Paginado from "./Paginado.jsx";
 import FilterOrigin from "./FilterOrigin";
 import FilterRating from "./FilterRating";
 import FilterName from "./FilterName";
 import FilterGenre from "./FilterGenre";
 import SearchBar from "./SearchBar";
-import { Link } from "react-router-dom";
+
 import '../CSS/Home.css'
-import Loading from '../CSS/Loading.gif'
 import video from '../CSS/Assassins_Creed_Trailer_Trim.mp4'
+
+
 
 export default function Home() {
 
@@ -25,13 +28,10 @@ export default function Home() {
     const indexOfFirstGame = indexOfLastGame - gamesXPage
     const currentGames = allVideogames.slice(indexOfFirstGame, indexOfLastGame)
 
-
-    let pages = (pageNumber) => {
-        setCurrentPage(pageNumber)
-    }
-
     useEffect(() => {
-        dispatch(getAllVideogames())
+        if (!allVideogames.length) {
+            dispatch(getAllVideogames())
+        }
     }, [])
 
     return (
@@ -62,37 +62,14 @@ export default function Home() {
                 <FilterName />
             </nav>
 
-
             <Paginado
                 gamesXPage={gamesXPage}
                 allgames={allVideogames.length}
-                pages={pages}
-                currentPage={currentPage}
+                pages={setCurrentPage}
             />
 
-            <div className="Cards">
-                {
-                    currentGames.length > 0 ?
+            <Games currentGames={currentGames} />
 
-                        typeof currentGames === "object"?
-                        currentGames.map(game => {
-                            return (
-                                <div>
-                                    <Game name={game.name} img={game.img} genres={game.genres} rating={game.rating} id={game.id} />
-                                </div>
-                            )
-                        })
-                        :
-                        <h1>{currentGames}</h1>
-                        :
-                        <div>
-                            <h2>Loading...</h2>
-                            <img src={Loading} alt="Cargando" />
-                        </div>
-                }
-            </div>
-
-   
         </div>
     )
 }
