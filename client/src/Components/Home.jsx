@@ -29,10 +29,8 @@ export default function Home() {
     const currentGames = allVideogames.slice(indexOfFirstGame, indexOfLastGame)
 
     useEffect(() => {
-        if (!allVideogames.length) {
             dispatch(getAllVideogames())
-        }
-    }, [])
+    }, [dispatch])
 
     return (
         <div className="Home">
